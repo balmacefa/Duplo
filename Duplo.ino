@@ -1,5 +1,4 @@
-#include "Configuracion.h"
-
+#include "Accion.h"
 
 //Indicar si se encuantra en el modo de prueba
 boolean modoPrueba;
