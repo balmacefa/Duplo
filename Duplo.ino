@@ -26,7 +26,7 @@ Proceso* procesoModoPrueba;
 
 void setup() {
   accion = new Accion();
-  procesoModoPrueba = new Proceso(0UL);
+  procesoModoPrueba = new Proceso(accion);
 }
 
 void loop() {
@@ -71,7 +71,7 @@ void doModoProcesoCompleto(){
   //veficar la entrada del papel  
   if(accion->entradaPapel() == true){
     //crear un nuevo proceso y agregar el tiempo en que ocurrio
-    procesos.push_back( new Proceso(millis()) );
+    procesos.push_back( new Proceso(accion, millis()) );
 
     //colocar la maquina como trabajando
     enProceso = true;
@@ -87,6 +87,7 @@ void doModoProcesoCompleto(){
       if(pActual->esTerminado()){
         //eliminar de la lista
         procesos.erase(procesos.begin()+i-1);
+        delete pActual;
       }
     }
     //si los elementos de la lista son 0 se termina el equipo
