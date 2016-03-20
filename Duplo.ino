@@ -92,11 +92,3 @@ void doModoProcesoCompleto(){
     }
   }
 }
-
-boolean entradaPapel(){
-  //leer pin de entrada papel
-  return digitalRead(PIN_TORRE_ENVIO_PAPEL);
-}
-boolean inicioTorre(){
-  return digitalRead(PIN_TORRE_INICIA);
-}
