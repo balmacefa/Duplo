@@ -10,17 +10,19 @@ boolean enProceso;
 boolean enTest;
 
 //Almacena los procesos
-Proceso[] procesos;
+ListaProceso* procesos;
 
 //Realiza acciones, se utiliza para encender y apagar las bandas, y leer botones
-Accion accion;
+Accion* accion;
 
 //Para el modo de prueba
-Proceso procesoModoPueba;
+Proceso* procesoModoPueba;
 
 
 void setup() {
-
+  accion = new Accion();
+  procesos = new ListaProceso(accion);
+  procesoModoPueba = new Proceso();
 }
 
 void loop() {
