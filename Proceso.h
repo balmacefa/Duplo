@@ -2,7 +2,7 @@
 
 class Proceso{
   public:
-    Proceso();
+    Proceso(unsigned long timeInit);
     void hacerAjusteEngrape();
     void hacerEngrapar();
     void hacerAvanceDobladora();

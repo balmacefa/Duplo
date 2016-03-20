@@ -1,6 +1,6 @@
 #include "Proceso.h"
 
-Proceso::Proceso(){
+Proceso::Proceso(unsigned long timeInit){
 
 }
 
