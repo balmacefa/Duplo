@@ -39,19 +39,19 @@ void loop() {
 void doModoPrueba(){
   if(enTest == false){
     //buscar entrada se senal
-    if(menuAjusteEngrape() == true){
+    if(accion.menuAjusteEngrape() == true){
       enTest = true;
       procesoModoPrueba.hacerAjusteEngrape();
       
-    }else if(menuEngrapar() == true){
+    }else if(accion.menuEngrapar() == true){
       enTest = true;
       procesoModoPrueba.hacerEngrapar();
       
-    }else if(menuAvanceDobladora() == true){
+    }else if(accion.menuAvanceDobladora() == true){
       enTest = true;
       procesoModoPrueba.hacerAvanceDobladora();
       
-    }else if(menuDoblar() == true){
+    }else if(accion.menuDoblar() == true){
       enTest = true;
       procesoModoPrueba.hacerDoblar();
     }
