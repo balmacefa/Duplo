@@ -10,11 +10,15 @@ boolean enProceso;
 //Indica si la maquina esta haciendo un Test
 boolean enTest;
 
+//Almacena los procesos
 Proceso[] procesos;
 
-unsigned long tiempoActual;
+//Realiza acciones, se utiliza para encender y apagar las bandas, y leer botones
+Accion accion;
 
+//Para el modo de prueba
 Proceso procesoModoPueba;
+
 
 void setup() {
 
