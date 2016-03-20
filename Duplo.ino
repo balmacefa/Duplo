@@ -100,21 +100,3 @@ boolean entradaPapel(){
 boolean inicioTorre(){
   return digitalRead(PIN_TORRE_INICIA);
 }
-
-//Metos de leectura del menu
-boolean menuAjusteEngrape(){
-  return digitalRead(PIN_MENU_AJUSTES_ENGRAPE);
-}
-
-boolean menuEngrapar(){
-  return digitalRead(PIN_MENU_ENGRAPAR);
-}
-
-boolean menuAvanceDobladora(){
-  return digitalRead(PIN_MENU_AVANCE_DOBLADORA);
-
-}
-boolean menuDoblar(){
-  return digitalRead(PIN_MENU_DOBLAR);
-}
-
