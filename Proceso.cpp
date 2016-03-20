@@ -1,7 +1,10 @@
 #include "Proceso.h"
 
-Proceso::Proceso(unsigned long timeInit){
-
+Proceso::Proceso(Accion* accion, unsigned long timeInit){
+  _accion = accion;
+}
+Proceso::Proceso(Accion* accion){
+  _accion = accion;
 }
 
 void Proceso::hacerAjusteEngrape(){

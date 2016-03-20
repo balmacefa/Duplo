@@ -2,10 +2,13 @@
 #define Proceso_h
 
 #include "Arduino.h"
+#include "Accion.h"
 
 class Proceso{
   public:
-    Proceso(unsigned long timeInit);
+    Proceso(Accion* accion,unsigned long timeInit);
+    Proceso(Accion* accion);
+    
     void hacerAjusteEngrape();
     void hacerEngrapar();
     void hacerAvanceDobladora();
@@ -13,6 +16,9 @@ class Proceso{
     boolean esTerminado();
     
     void calcular();
+    
+    private:
+      Accion* _accion;
 };
 
 #endif
