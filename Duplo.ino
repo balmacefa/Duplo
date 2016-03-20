@@ -25,7 +25,7 @@ void setup() {
 }
 
 void loop() {
-  if( !enProceso && inicioTorre() == true){
+  if( !enProceso && accion.inicioTorre() == true){
     modoPrueba = false;
   }
   if(modoPrueba == true){
@@ -64,7 +64,7 @@ void doModoPrueba(){
 
 void doModoProcesoCompleto(){
   //veficar la entrada del papel  
-  if(entradaPapel() == true){
+  if(accion.entradaPapel() == true){
     //crear un nuevo proceso y agregar el tiempo en que ocurrio
     procesos.add( new Proceso(millis()) );
 
