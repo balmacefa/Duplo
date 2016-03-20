@@ -8,4 +8,8 @@ class Accion{
     boolean menuEngrapar();
     boolean menuAvanceDobladora();
     boolean menuDoblar();
+    
+    //Acciones de la torre
+    boolean entradaPapel();
+    boolean inicioTorre();
 };
