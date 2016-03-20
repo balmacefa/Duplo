@@ -2,6 +2,10 @@
 #include "Proceso.h"
 #include "ListaProceso.h"
 
+#include <StandardCplusplus.h>
+#include <vector>
+#include <iterator>
+
 //Indicar si se encuantra en el modo de prueba
 boolean modoPrueba;
 
@@ -12,7 +16,7 @@ boolean enProceso;
 boolean enTest;
 
 //Almacena los procesos
-ListaProceso* procesos;
+std::vector<Proceso*> procesos;
 
 //Realiza acciones, se utiliza para encender y apagar las bandas, y leer botones
 Accion* accion;
@@ -22,7 +26,6 @@ Proceso* procesoModoPrueba;
 
 void setup() {
   accion = new Accion();
-  procesos = new ListaProceso(accion);
   procesoModoPrueba = new Proceso(0UL);
 }
 
@@ -68,7 +71,7 @@ void doModoProcesoCompleto(){
   //veficar la entrada del papel  
   if(accion->entradaPapel() == true){
     //crear un nuevo proceso y agregar el tiempo en que ocurrio
-    procesos->add( new Proceso(millis()) );
+    procesos.push_back( new Proceso(millis()) );
 
     //colocar la maquina como trabajando
     enProceso = true;
@@ -77,17 +80,17 @@ void doModoProcesoCompleto(){
   if( enProceso == true ){
     //calcular los procesos
     //Del mas antiguo al reciente
-    for(int i = procesos->legth() - 1; i >= 0; i-- ){
-      Proceso* pActual = procesos->get(i);
+    for(int i = procesos.size() - 1; i >= 0; i-- ){
+      Proceso* pActual = procesos.at(i);
       pActual->calcular();  
       //buscar si un proceso fue terminado
       if(pActual->esTerminado()){
         //eliminar de la lista
-        procesos->eliminar(i);
+        procesos.erase(procesos.begin()+i-1);
       }
     }
     //si los elementos de la lista son 0 se termina el equipo
-    if(procesos->legth() == 0){
+    if(procesos.size() == 0){
       enProceso == false;
       //colocar en modo de prueba
       modoPrueba = true;
