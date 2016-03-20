@@ -8,4 +8,6 @@ class Proceso{
     void hacerAvanceDobladora();
     void hacerDoblar();
     boolean esTerminado();
+    
+    void calcular();
 };

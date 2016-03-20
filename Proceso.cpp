@@ -23,3 +23,7 @@ void Proceso::hacerDoblar(){
 boolean Proceso::esTerminado(){
   return null;
 }
+
+void Proceso::calcular(){
+
+}
