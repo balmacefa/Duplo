@@ -1,4 +1,6 @@
 #include "Accion.h"
+#include "Proceso.h"
+#include "ListaProceso.h"
 
 //Indicar si se encuantra en el modo de prueba
 boolean modoPrueba;
