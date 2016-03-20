@@ -1,3 +1,5 @@
+#ifndef Configuracion_h
+#define Configuracion_h
 
 //Tiempos
 //Engrapadora
@@ -19,3 +21,5 @@
 
 #define TIM_ENTRADA_SALIDA_CORRIENTE_DOBLADORA unsigned long -1//Tiempo donde se activa la salida de corriente para la salida del papel o la cortadora
 #define TIM_SIG_DOBLADORA unsigned long -1//Tiempo que permanece la segnal de la salida de corriente en el rele
+
+#endif

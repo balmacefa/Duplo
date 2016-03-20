@@ -7,7 +7,8 @@ Accion::Accion(){
 
 //Metos de leectura del menu
 boolean Accion::menuAjusteEngrape(){
-  return digitalRead(PIN_MENU_AJUSTES_ENGRAPE);
+  int value = digitalRead(PIN_MENU_AJUSTES_ENGRAPE);
+  return false;
 }
 
 boolean Accion::menuEngrapar(){
@@ -23,11 +24,11 @@ boolean Accion::menuDoblar(){
 }
 
 //TORRE
-boolean entradaPapel(){
+boolean Accion::entradaPapel(){
   //leer pin de entrada papel
   return digitalRead(PIN_TORRE_ENVIO_PAPEL);
 }
-boolean inicioTorre(){
+boolean Accion::inicioTorre(){
   return digitalRead(PIN_TORRE_INICIA);
 }
 

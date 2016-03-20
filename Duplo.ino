@@ -23,11 +23,11 @@ Proceso* procesoModoPrueba;
 void setup() {
   accion = new Accion();
   procesos = new ListaProceso(accion);
-  procesoModoPueba = new Proceso();
+  procesoModoPrueba = new Proceso(0UL);
 }
 
 void loop() {
-  if( !enProceso && accion.inicioTorre() == true){
+  if( !enProceso && accion->inicioTorre() == true){
     modoPrueba = false;
   }
   if(modoPrueba == true){
@@ -41,34 +41,34 @@ void loop() {
 void doModoPrueba(){
   if(enTest == false){
     //buscar entrada se senal
-    if(accion.menuAjusteEngrape() == true){
+    if(accion->menuAjusteEngrape() == true){
       enTest = true;
-      procesoModoPrueba.hacerAjusteEngrape();
+      procesoModoPrueba->hacerAjusteEngrape();
       
-    }else if(accion.menuEngrapar() == true){
+    }else if(accion->menuEngrapar() == true){
       enTest = true;
-      procesoModoPrueba.hacerEngrapar();
+      procesoModoPrueba->hacerEngrapar();
       
-    }else if(accion.menuAvanceDobladora() == true){
+    }else if(accion->menuAvanceDobladora() == true){
       enTest = true;
-      procesoModoPrueba.hacerAvanceDobladora();
+      procesoModoPrueba->hacerAvanceDobladora();
       
-    }else if(accion.menuDoblar() == true){
+    }else if(accion->menuDoblar() == true){
       enTest = true;
-      procesoModoPrueba.hacerDoblar();
+      procesoModoPrueba->hacerDoblar();
     }
     
   }
-  if(procesoModoPrueba.esTerminado() == true){
+  if(procesoModoPrueba->esTerminado() == true){
     enTest = false;
   }
 }
 
 void doModoProcesoCompleto(){
   //veficar la entrada del papel  
-  if(accion.entradaPapel() == true){
+  if(accion->entradaPapel() == true){
     //crear un nuevo proceso y agregar el tiempo en que ocurrio
-    procesos.add( new Proceso(millis()) );
+    procesos->add( new Proceso(millis()) );
 
     //colocar la maquina como trabajando
     enProceso = true;
@@ -77,17 +77,17 @@ void doModoProcesoCompleto(){
   if( enProceso == true ){
     //calcular los procesos
     //Del mas antiguo al reciente
-    for(int i = procesos.legth() - 1; i >= 0; i-- ){
-      Proceso pActual = procesos.get(i);
-      pActual.calcular();  
+    for(int i = procesos->legth() - 1; i >= 0; i-- ){
+      Proceso* pActual = procesos->get(i);
+      pActual->calcular();  
       //buscar si un proceso fue terminado
-      if(pActual.esTerminado()){
+      if(pActual->esTerminado()){
         //eliminar de la lista
-        processos.eliminar(i);
+        procesos->eliminar(i);
       }
     }
     //si los elementos de la lista son 0 se termina el equipo
-    if(procesos.legth() == 0){
+    if(procesos->legth() == 0){
       enProceso == false;
       //colocar en modo de prueba
       modoPrueba = true;

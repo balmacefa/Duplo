@@ -1,3 +1,6 @@
+#ifndef Accion_h
+#define Accion_h
+
 #include "Pines.h"
 #include "Arduino.h"
 
@@ -13,3 +16,5 @@ class Accion{
     boolean entradaPapel();
     boolean inicioTorre();
 };
+
+#endif

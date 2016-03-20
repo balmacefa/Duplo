@@ -1,3 +1,6 @@
+#ifndef Proceso_h
+#define Proceso_h
+
 #include "Arduino.h"
 
 class Proceso{
@@ -11,3 +14,5 @@ class Proceso{
     
     void calcular();
 };
+
+#endif

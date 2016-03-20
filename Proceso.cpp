@@ -21,7 +21,7 @@ void Proceso::hacerDoblar(){
 }
 
 boolean Proceso::esTerminado(){
-  return null;
+  return false;
 }
 
 void Proceso::calcular(){
