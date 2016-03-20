@@ -18,8 +18,7 @@ ListaProceso* procesos;
 Accion* accion;
 
 //Para el modo de prueba
-Proceso* procesoModoPueba;
-
+Proceso* procesoModoPrueba;
 
 void setup() {
   accion = new Accion();
