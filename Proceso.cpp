@@ -38,26 +38,6 @@ void Proceso::setModoTest(boolean habilitar){
   _modoTest = habilitar;
 }
 
-int Proceso::contarMitadVueltasAjustePapel(){
-  return -1;
-}
-void Proceso::topeGrapa(boolean estado){
-  digitalWrite( PIN_TOPE_ENGRAPAR, estado );
-}
-
-void Proceso::salidaCorrienteDobladora(boolean estado){
-  digitalWrite( PIN_SALIDA_CORRIENTE_DOBLADORA, estado );
-}
-void Proceso::doblar(boolean estado){
-  digitalWrite( PIN_SALIDA_CORRIENTE_DOBLADORA, estado );
-}
-void Proceso::ajustePapel(boolean estado){
-  digitalWrite( PIN_POS_AJUSTE_HORIZONTAL_ENGRAPADORA , estado);
-  digitalWrite( PIN_POS_AJUSTE_VERTICAL_ENGRAPADORA , estado);
-}
-void Proceso::engrapar(boolean estado){
- digitalWrite( PIN_ENGRAPAR, estado );
-}
 
 boolean esSalidaCorrienteDobladora = false;
 
@@ -99,7 +79,6 @@ void Proceso::calcular( ){
       cantidadMitadVuelta = 0;
     }
     
-    
     //abrir los ajuste verticales para que pueda entrar nuevo papel, Dar solamente una media vuelta
     //activar los ajuste de papel
     if( !esAjustePapelAbrir && tiempoActual >= ( TIM_ENTRADA_AJUSTE_HORI_VERT_PAPEL_DEJAR_PASAR ) ){
@@ -127,6 +106,15 @@ void Proceso::calcular( ){
       engrapar(false);
     }
     
+    //avance del papel
+    if( !esEngrapar && tiempoActual >= TIM_ENTRADA_ENGRAPAR ){
+      engrapar(true);
+      esEngrapar = true;
+    }
+    //Desactivar senal de engrapadora
+    if( esTope && tiempoActual >= ( TIM_ENTRADA_ENGRAPAR + TIM_SIG_ENGRAPAR ) ){
+      engrapar(false);
+    }
     
     
     //si ya se termino el proceso

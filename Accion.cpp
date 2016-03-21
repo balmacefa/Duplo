@@ -32,3 +32,28 @@ boolean Accion::inicioTorre(){
   return digitalRead(PIN_TORRE_INICIA);
 }
 
+//Engrapadora
+int Accion::contarMitadVueltasAjustePapel(){
+  return -1;
+}
+void Accion::ajustePapel(boolean estado){
+  digitalWrite( PIN_POS_AJUSTE_HORIZONTAL_ENGRAPADORA , estado);
+  digitalWrite( PIN_POS_AJUSTE_VERTICAL_ENGRAPADORA , estado);
+}
+void Accion::engrapar(boolean estado){
+ digitalWrite( PIN_ENGRAPAR, estado );
+}
+
+
+//Dobladora
+void Accion::topeGrapa(boolean estado){
+  digitalWrite( PIN_TOPE_ENGRAPAR, estado );
+}
+
+void Accion::salidaCorrienteDobladora(boolean estado){
+  digitalWrite( PIN_SALIDA_CORRIENTE_DOBLADORA, estado );
+}
+void Accion::doblar(boolean estado){
+  digitalWrite( PIN_DOBLADORA, estado );
+}
+
