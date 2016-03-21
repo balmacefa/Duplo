@@ -3,6 +3,8 @@
 
 #include "Arduino.h"
 #include "Accion.h"
+#include "Configuracion.h"
+
 
 class Proceso{
   public:
@@ -15,10 +17,18 @@ class Proceso{
     void hacerDoblar();
     boolean esTerminado();
     
+    void setModoTest(boolean habilitar);
+    
     void calcular();
     
     private:
       Accion* _accion;
+      boolean _modoTest;
+      boolean _terminado;
+      unsigned long _tiempoInicio;
+      void topeGrapa(boolean estado);
+      void salidaCorrienteDobladora(boolean estado);
+      void doblar(boolean estado);
 };
 
 #endif

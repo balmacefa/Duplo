@@ -27,6 +27,7 @@ Proceso* procesoModoPrueba;
 void setup() {
   accion = new Accion();
   procesoModoPrueba = new Proceso(accion);
+  procesoModoPrueba->setModoTest(true);
 }
 
 void loop() {
@@ -47,7 +48,6 @@ void doModoPrueba(){
     if(accion->menuAjusteEngrape() == true){
       enTest = true;
       procesoModoPrueba->hacerAjusteEngrape();
-      
     }else if(accion->menuEngrapar() == true){
       enTest = true;
       procesoModoPrueba->hacerEngrapar();
@@ -60,11 +60,13 @@ void doModoPrueba(){
       enTest = true;
       procesoModoPrueba->hacerDoblar();
     }
-    
+  }else{
+    procesoModoPrueba->calcular();
   }
   if(procesoModoPrueba->esTerminado() == true){
     enTest = false;
   }
+  
 }
 
 void doModoProcesoCompleto(){
