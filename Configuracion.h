@@ -4,7 +4,10 @@
 //Tiempos
 //Engrapadora
 #define TIM_ENTRADA_AJUSTE_HORI_VERT_PAPEL -1//Tiempo donde entran los ajsute del papel para el engrapado
-#define MITAD_VUELTAS_AJUSTE_HORI_VERT_PAPEL 4//Numero de mitad de vueltas
+#define MITAD_VUELTAS_AJUSTE_HORI_VERT_PAPEL 3//Numero de mitad de vueltas
+
+#define TIM_ENTRADA_AJUSTE_HORI_VERT_PAPEL_DEJAR_PASAR -1 //Tiempo dedpues de engrapar para relajar los ajuste de papel y dejar pasar el papel
+#define MITAD_VUELTAS_AJUSTE_HORI_VERT_PAPEL_DEJAR_PASAR 1//Numero de mitad de vueltas
 
 
 #define TIM_ENTRADA_ENGRAPAR -1//Tiempo donde se activa el mecanismo para engrapar
