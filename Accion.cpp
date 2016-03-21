@@ -23,6 +23,7 @@ boolean Accion::menuDoblar(){
   return digitalRead(PIN_MENU_DOBLAR);
 }
 
+
 //TORRE
 boolean Accion::entradaPapel(){
   //leer pin de entrada papel
@@ -33,27 +34,42 @@ boolean Accion::inicioTorre(){
 }
 
 //Engrapadora
+void Accion::bandaEngrapadora(boolean estado){
+ digitalWrite( PIN_BANDA_ENGRAPDORA, estado );
+}
 int Accion::contarMitadVueltasAjustePapel(){
+  //Leer los sensores
+  //PIN_POS_AJUSTE_HORIZONTAL_ENGRAPADORA
+  //PIN_POS_AJUSTE_VERTICAL_ENGRAPADORA
   return -1;
 }
 void Accion::ajustePapel(boolean estado){
-  digitalWrite( PIN_POS_AJUSTE_HORIZONTAL_ENGRAPADORA , estado);
-  digitalWrite( PIN_POS_AJUSTE_VERTICAL_ENGRAPADORA , estado);
+  digitalWrite( PIN_AJUSTE_HORIZONTAL_ENGRAPADORA , estado);
+  digitalWrite( PIN_AJUSTE_VERTICAL_ENGRADORA , estado);
 }
 void Accion::engrapar(boolean estado){
  digitalWrite( PIN_ENGRAPAR, estado );
 }
-
+void Accion::avancePapelEngrapadora(boolean estado){
+  digitalWrite( PIN_AVANCE_PAPEL_ENGRAPDORA, estado );
+}
 
 //Dobladora
+void Accion::bandaDobladora(boolean estado){
+ digitalWrite( PIN_BANDA_DOBLADORA, estado );
+}
 void Accion::topeGrapa(boolean estado){
   digitalWrite( PIN_TOPE_ENGRAPAR, estado );
 }
-
+void Accion::doblar(boolean estado){
+  digitalWrite( PIN_DOBLADORA, estado );
+}
 void Accion::salidaCorrienteDobladora(boolean estado){
   digitalWrite( PIN_SALIDA_CORRIENTE_DOBLADORA, estado );
 }
-void Accion::doblar(boolean estado){
-  digitalWrite( PIN_DOBLADORA, estado );
+
+void Accion::bandas(boolean estado){
+  bandaDobladora(estado);
+  bandaEngrapadora(estado);
 }
 

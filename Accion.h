@@ -16,13 +16,22 @@ class Accion{
     boolean entradaPapel();
     boolean inicioTorre();
     
-    
+    //Dobladora
     void topeGrapa(boolean estado);
     void salidaCorrienteDobladora(boolean estado);
     void doblar(boolean estado);
+    void bandaDobladora(boolean estado);
+    
+    //Engrapadora
     void ajustePapel(boolean estado);
     void engrapar(boolean estado);
     int contarMitadVueltasAjustePapel();
+    void avancePapelEngrapadora(boolean estado);
+    void bandaEngrapadora(boolean estado);
+    
+    void bandas(boolean estado);
+    
+    
 };
 
 #endif
