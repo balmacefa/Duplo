@@ -48,6 +48,7 @@ boolean esEngrapar = false;
 boolean esAvancePapelEngrapadora = false;
 boolean esDoblar = false;
 int cantidadMitadVuelta = 0;
+unsigned long sigLecturaAjustePapel = 0UL;
 
 void Proceso::calcular( ){
   if(!_modoTest){
@@ -67,32 +68,27 @@ void Proceso::calcular( ){
     }
     
     //activar los ajuste de papel
-    if( !esAjustePapel && tiempoActual >= ( TIM_ENTRADA_AJUSTE_HORI_VERT_PAPEL ) ){
+    if( (!esAjustePapel && tiempoActual >= ( TIM_ENTRADA_AJUSTE_HORI_VERT_PAPEL ))
+    |( !esAjustePapelAbrir && tiempoActual >= ( TIM_ENTRADA_AJUSTE_HORI_VERT_PAPEL_DEJAR_PASAR ) )){
       _accion->ajustePapel(true);
       esAjustePapel = true;
-    }
-    //Contar cantidad de mitad de vueltas de los motores
-    if( esAjustePapel ){
-      _accion->contarMitadVueltasAjustePapel();
-    }
-    //desactivas los ajustes verticales despues de 4 mitad de vueltas
-    if(cantidadMitadVuelta >= MITAD_VUELTAS_AJUSTE_HORI_VERT_PAPEL){
-      _accion->ajustePapel(false);
-      cantidadMitadVuelta = 0;
+      sigLecturaAjustePapel = tiempoActual + FRECUENCIA_LECTURA_AJUSTE_PAPEL;
     }
     
-    //abrir los ajuste verticales para que pueda entrar nuevo papel, Dar solamente una media vuelta
-    //activar los ajuste de papel
-    if( !esAjustePapelAbrir && tiempoActual >= ( TIM_ENTRADA_AJUSTE_HORI_VERT_PAPEL_DEJAR_PASAR ) ){
-      _accion->ajustePapel(true);
-      esAjustePapelAbrir = true;
-    }
     //Contar cantidad de mitad de vueltas de los motores
-    if( esAjustePapelAbrir ){
-      _accion->contarMitadVueltasAjustePapel();
+    if( esAjustePapel || esAjustePapelAbrir ){
+      //frecuencia para preguntar
+      if(tiempoActual >= sigLecturaAjustePapel && _accion->mitadVueltasAjustePapel() ){
+        //aumentar cantidad de vueltas
+        cantidadMitadVuelta++;
+        //Ajustar el nuevo tiempo para preguntar
+        sigLecturaAjustePapel = tiempoActual + FRECUENCIA_LECTURA_AJUSTE_PAPEL;
+      }
     }
-    //desactivas los ajustes verticales despues de 1 mitad de vueltas
-    if(cantidadMitadVuelta == MITAD_VUELTAS_AJUSTE_HORI_VERT_PAPEL_DEJAR_PASAR){
+    
+    //desactivas los ajustes verticales despues de 4 mitad de vueltas
+    if( (esAjustePapel && cantidadMitadVuelta >= MITAD_VUELTAS_AJUSTE_HORI_VERT_PAPEL)
+    | (esAjustePapelAbrir && cantidadMitadVuelta == MITAD_VUELTAS_AJUSTE_HORI_VERT_PAPEL_DEJAR_PASAR) ){
       _accion->ajustePapel(false);
       cantidadMitadVuelta = 0;
     }
