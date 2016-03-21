@@ -25,7 +25,7 @@ class Accion{
     //Engrapadora
     void ajustePapel(boolean estado);
     void engrapar(boolean estado);
-    int contarMitadVueltasAjustePapel();
+    boolean mitadVueltasAjustePapel();
     void avancePapelEngrapadora(boolean estado);
     void bandaEngrapadora(boolean estado);
     

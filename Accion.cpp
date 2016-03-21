@@ -37,11 +37,11 @@ boolean Accion::inicioTorre(){
 void Accion::bandaEngrapadora(boolean estado){
  digitalWrite( PIN_BANDA_ENGRAPDORA, estado );
 }
-int Accion::contarMitadVueltasAjustePapel(){
+boolean Accion::mitadVueltasAjustePapel(){
   //Leer los sensores
   //PIN_POS_AJUSTE_HORIZONTAL_ENGRAPADORA
   //PIN_POS_AJUSTE_VERTICAL_ENGRAPADORA
-  return -1;
+  return false;
 }
 void Accion::ajustePapel(boolean estado){
   digitalWrite( PIN_AJUSTE_HORIZONTAL_ENGRAPADORA , estado);
