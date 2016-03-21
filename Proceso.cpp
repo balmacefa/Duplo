@@ -38,6 +38,9 @@ void Proceso::setModoTest(boolean habilitar){
   _modoTest = habilitar;
 }
 
+int Proceso::contarMitadVueltasAjustePapel(){
+  return -1;
+}
 void Proceso::topeGrapa(boolean estado){
   digitalWrite( PIN_TOPE_ENGRAPAR, estado );
 }
@@ -52,36 +55,43 @@ void Proceso::ajustePapel(boolean estado){
   digitalWrite( PIN_POS_AJUSTE_HORIZONTAL_ENGRAPADORA , estado);
   digitalWrite( PIN_POS_AJUSTE_VERTICAL_ENGRAPADORA , estado);
 }
+void Proceso::engrapar(boolean estado){
+ digitalWrite( PIN_ENGRAPAR, estado );
+}
 
 boolean esSalidaCorrienteDobladora = false;
 
 boolean esTope = false;
-boolean ajustePapel = false;
-
+boolean esAjustePapel = false;
+boolean esAjustePapelAbrir = false;
+boolean esEngrapar = false;
 int cantidadMitadVuelta = 0;
 
-void Proceso::calcular(){
+void Proceso::calcular( ){
   if(!_modoTest){
     unsigned long tiempoActual = millis();
     
+    //Calcular el offset del tiempo
+    tiempoActual = tiempoActual - _tiempoInicio;
+    
     //Entrada del tope de papel
-    if( !esTope && tiempoActual >= ( _tiempoInicio + TIM_ENTRADA_TOPE_ENGRAPAR ) ){
+    if( !esTope && tiempoActual >= TIM_ENTRADA_TOPE_ENGRAPAR ){
       topeGrapa(true);
       esTope = true;
     }
     //Desactivar senal del tope de papel
-    if( esTope && tiempoActual >= ( _tiempoInicio + TIM_ENTRADA_TOPE_ENGRAPAR + TIM_SIG_TOPE_ENGRAPAR ) ){
+    if( esTope && tiempoActual >= ( TIM_ENTRADA_TOPE_ENGRAPAR + TIM_SIG_TOPE_ENGRAPAR ) ){
       topeGrapa(false);
     }
     
     //activar los ajuste de papel
-    if( !ajustePapel && tiempoActual >= ( _tiempoInicio + TIM_ENTRADA_AJUSTE_HORI_VERT_PAPEL ) ){
+    if( !esAjustePapel && tiempoActual >= ( TIM_ENTRADA_AJUSTE_HORI_VERT_PAPEL ) ){
       ajustePapel(true);
-      ajustePapel = true;
+      esAjustePapel = true;
     }
     //Contar cantidad de mitad de vueltas de los motores
-    if( ajustePapel ){
-      contarMidadVueltas();
+    if( esAjustePapel ){
+      contarMitadVueltasAjustePapel();
     }
     //desactivas los ajustes verticales despues de 4 mitad de vueltas
     if(cantidadMitadVuelta >= MITAD_VUELTAS_AJUSTE_HORI_VERT_PAPEL){
@@ -89,21 +99,34 @@ void Proceso::calcular(){
       cantidadMitadVuelta = 0;
     }
     
-    //abrir los ajuste verticales
+    
+    //abrir los ajuste verticales para que pueda entrar nuevo papel, Dar solamente una media vuelta
     //activar los ajuste de papel
-    if( !ajustePapel && tiempoActual >= ( _tiempoInicio + TIM_ENTRADA_AJUSTE_HORI_VERT_PAPEL ) ){
+    if( !esAjustePapelAbrir && tiempoActual >= ( TIM_ENTRADA_AJUSTE_HORI_VERT_PAPEL_DEJAR_PASAR ) ){
       ajustePapel(true);
-      ajustePapel = true;
+      esAjustePapelAbrir = true;
     }
     //Contar cantidad de mitad de vueltas de los motores
-    if( ajustePapel ){
-      contarMidadVueltas();
+    if( esAjustePapelAbrir ){
+      contarMitadVueltasAjustePapel();
     }
-    //desactivas los ajustes verticales despues de 4 mitad de vueltas
-    if(cantidadMitadVuelta >= MITAD_VUELTAS_AJUSTE_HORI_VERT_PAPEL){
+    //desactivas los ajustes verticales despues de 1 mitad de vueltas
+    if(cantidadMitadVuelta == MITAD_VUELTAS_AJUSTE_HORI_VERT_PAPEL_DEJAR_PASAR){
       ajustePapel(false);
       cantidadMitadVuelta = 0;
     }
+    
+    //Engrapar
+    //Entrada de la engrapadora
+    if( !esEngrapar && tiempoActual >= TIM_ENTRADA_ENGRAPAR ){
+      engrapar(true);
+      esEngrapar = true;
+    }
+    //Desactivar senal de engrapadora
+    if( esTope && tiempoActual >= ( TIM_ENTRADA_ENGRAPAR + TIM_SIG_ENGRAPAR ) ){
+      engrapar(false);
+    }
+    
     
     
     //si ya se termino el proceso

@@ -29,6 +29,9 @@ class Proceso{
       void topeGrapa(boolean estado);
       void salidaCorrienteDobladora(boolean estado);
       void doblar(boolean estado);
+      void ajustePapel(boolean estado);
+      void engrapar(boolean estado);
+      int contarMitadVueltasAjustePapel();
 };
 
 #endif
