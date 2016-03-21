@@ -1,7 +1,6 @@
 #ifndef Proceso_h
 #define Proceso_h
 
-#include "Arduino.h"
 #include "Accion.h"
 #include "Configuracion.h"
 
