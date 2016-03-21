@@ -6,13 +6,16 @@
 #include <iterator>
 
 //Indicar si se encuantra en el modo de prueba
-boolean modoPrueba;
+boolean modoPrueba = true;
 
 //Indica si la maquina esta haciendo un proceso
-boolean enProceso;
+boolean enProceso = false;
 
 //Indica si la maquina esta haciendo un Test
-boolean enTest;
+boolean enTest = false;
+
+//Indica si las bandas estan encendidas
+boolean esBandas = false;
 
 //Almacena los procesos
 std::vector<Proceso*> procesos;
@@ -37,6 +40,12 @@ void loop() {
     doModoPrueba();
   }
   else{
+    if(!esBandas){
+      //Mandar se;al de las bandas solo una vez
+      //Encender las bandas
+      accion->bandas(true);
+    }
+    
     doModoProcesoCompleto();
   }
 }
@@ -96,6 +105,10 @@ void doModoProcesoCompleto(){
       enProceso == false;
       //colocar en modo de prueba
       modoPrueba = true;
+      
+      //Apagar las bandas
+      accion->bandas(false);
+      esBandas = false;
     }
   }
 }
