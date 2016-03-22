@@ -29,7 +29,6 @@ Proceso* procesoModoPrueba;
 void setup() {
   accion = new Accion();
   procesoModoPrueba = new Proceso(accion);
-  procesoModoPrueba->setModoTest(true);
 }
 
 void loop() {
@@ -56,23 +55,27 @@ void doModoPrueba(){
     if(accion->menuAjusteEngrape() == true){
       enTest = true;
       procesoModoPrueba->hacerAjusteEngrape();
+      procesoModoPrueba->setTiempoInicial( millis() );
     }else if(accion->menuEngrapar() == true){
       enTest = true;
       procesoModoPrueba->hacerEngrapar();
-      
+      procesoModoPrueba->setTiempoInicial( millis() );
     }else if(accion->menuAvanceDobladora() == true){
       enTest = true;
       procesoModoPrueba->hacerAvanceDobladora();
-      
+      procesoModoPrueba->setTiempoInicial( millis() );
     }else if(accion->menuDoblar() == true){
       enTest = true;
       procesoModoPrueba->hacerDoblar();
+      procesoModoPrueba->setTiempoInicial( millis() );
     }
   }else{
-    procesoModoPrueba->calcular();
+    procesoModoPrueba->calcularPrueba();
   }
   if(procesoModoPrueba->esTerminado() == true){
     enTest = false;
+    procesoModoPrueba->reiniciarVariables();
+    procesoModoPrueba->setTiempoInicial( 0UL );
   }
   
 }
