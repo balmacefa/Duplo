@@ -95,7 +95,7 @@ void Proceso::calcularPrueba(){
         esEngrapar = true;
       }
       //Desactivar senal de engrapadora
-      if( esEngrapar && tiempoActual >= TIM_SIG_ENGRAPAR ){
+      if( esEngrapar && tiempoActual >= TIM_TEST_SIG_ENGRAPAR ){
         _accion->engrapar(false);
       }
       //Liberar los topes y ajustes
@@ -137,7 +137,7 @@ void Proceso::calcularPrueba(){
         esAvancePapelEngrapadora = true;
       }
       //Desactivar senal de avance papel
-      if( esAvancePapelEngrapadora && tiempoActual >= TIM_SIG_AVANCE_PAPEL_ENGRAPADORA ){
+      if( esAvancePapelEngrapadora && tiempoActual >= TIM_TEST_SIG_AVANCE_PAPEL_ENGRAPADORA ){
         _accion->avancePapelEngrapadora(false);
         
         //terminar
@@ -148,6 +148,34 @@ void Proceso::calcularPrueba(){
     break;
     
     case TEST_DOBLAR:
+        
+        //Engrapar
+        if( !esDoblar){
+          //Encender la banda
+          _accion->bandaDobladora(true);
+          _accion->doblar(true);
+          esDoblar = true;
+        }
+        //Desactivar senal de doblar
+        if( esDoblar && tiempoActual >= TIM_TEST_SIG_ENGRAPAR ){
+          _accion->engrapar(false);
+        }
+        
+        //activar salida final del papel
+        if( !esSalidaCorrienteDobladora && tiempoActual >= ( TIM_TEST_ENTRADA_SALIDA_CORRIENTE_DOBLADORA ) ){
+          esSalidaCorrienteDobladora = true;
+          _accion->salidaCorrienteDobladora(true);
+        }
+        
+        //si ya se termino el proceso
+        if(tiempoActual >= ( TIM_TEST_ENTRADA_SALIDA_CORRIENTE_DOBLADORA + TIM_TEST_SIG_DOBLADORA ) ){
+          //Ya hemos terminado
+          //Desactivar la salida de corriente
+          _accion->salidaCorrienteDobladora(false);
+          _accion->bandaDobladora(false);          
+          _terminado = true;
+        }
+          
     break;
   }
 }
@@ -226,7 +254,7 @@ void Proceso::calcular( ){
   }
   
   //desactivar dobladora
-  if(esDoblar && tiempoActual >= ( _tiempoInicio + TIM_ENTRADA_DOBLADORA + TIM_SIG_DOBLADORA ) ){
+  if(esDoblar && tiempoActual >= ( TIM_ENTRADA_DOBLADORA + TIM_SIG_DOBLADORA ) ){
     _accion->doblar(false);
   }
      
@@ -237,7 +265,7 @@ void Proceso::calcular( ){
   }
   
   //si ya se termino el proceso
-  if(tiempoActual >= ( TIM_ENTRADA_SALIDA_CORRIENTE_DOBLADORA + TIM_SIG_DOBLADORA ) ){
+  if(tiempoActual >= ( TIM_ENTRADA_SALIDA_CORRIENTE_DOBLADORA + TIM_SIG_SALIDA_CORRIENTE_DOBLADORA ) ){
     //Ya hemos terminado
     //Desactivar la salida de corriente
     _accion->salidaCorrienteDobladora(false);
