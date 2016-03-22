@@ -47,11 +47,12 @@ void Proceso::hacerDoblar(){
 
 void Proceso::calcularPrueba(){
   unsigned long tiempoActual = millis();
+  tiempoActual -= _tiempoInicio;
   switch (_test){
     case TEST_AJUSTE:
       //levantar Tope
       if( !esTope ){
-        accion.topeGrapa(true);
+        _accion->topeGrapa(true);
         esTope = true;
       }
       //mover los motores
@@ -63,7 +64,7 @@ void Proceso::calcularPrueba(){
       }
       
       //Contar cantidad de mitad de vueltas de los motores
-      if( esAjustePapel || esAjustePapelAbrir ){
+      if( esAjustePapel ){
         //frecuencia para preguntar
         if(tiempoActual >= sigLecturaAjustePapel && _accion->mitadVueltasAjustePapel() ){
           //aumentar cantidad de vueltas
@@ -72,13 +73,78 @@ void Proceso::calcularPrueba(){
           sigLecturaAjustePapel = tiempoActual + FRECUENCIA_LECTURA_AJUSTE_PAPEL;
         }
       }
+       //desactivas los ajustes verticales despues de 4 mitad de vueltas
+      if( (esAjustePapel && cantidadMitadVuelta >= MITAD_VUELTAS_AJUSTE_HORI_VERT_PAPEL)){
+        _accion->ajustePapel(false);
+        cantidadMitadVuelta = 0;
+        
+        //terminar
+        _terminado = true;
+      }
       
     break;
     
     case TEST_ENGRAPAR:
+      
+      //Encender la banda
+      _accion->bandaEngrapadora(true);
+      
+      //Engrapar
+      if( !esEngrapar){
+        _accion->engrapar(true);
+        esEngrapar = true;
+      }
+      //Desactivar senal de engrapadora
+      if( esEngrapar && tiempoActual >= TIM_SIG_ENGRAPAR ){
+        _accion->engrapar(false);
+      }
+      //Liberar los topes y ajustes
+      if(!esTope && ( tiempoActual >= TIM_TEST_LIBERAR_AJUSTES ) ){
+        _accion->topeGrapa(false);
+        esTope = false;
+        _accion->ajustePapel(true);
+        esAjustePapel = true;
+        sigLecturaAjustePapel = tiempoActual + FRECUENCIA_LECTURA_AJUSTE_PAPEL;
+      }
+      //Contar cantidad de mitad de vueltas de los motores
+      if( esAjustePapel ){
+        //frecuencia para preguntar
+        if(tiempoActual >= sigLecturaAjustePapel && _accion->mitadVueltasAjustePapel() ){
+          //aumentar cantidad de vueltas
+          cantidadMitadVuelta++;
+          //Ajustar el nuevo tiempo para preguntar
+          sigLecturaAjustePapel = tiempoActual + FRECUENCIA_LECTURA_AJUSTE_PAPEL;
+        }
+      }
+       //desactivas los ajustes verticales 
+      if( (esAjustePapel && cantidadMitadVuelta == MITAD_VUELTAS_AJUSTE_HORI_VERT_PAPEL_DEJAR_PASAR)){
+        _accion->ajustePapel(false);
+        cantidadMitadVuelta = 0;
+        //terminar
+        //apagar la banda
+        _accion->bandaEngrapadora(false);
+        _terminado = true;
+      }
     break;
     
     case TEST_AVANCE_DOBLAR:
+      //avance del papel
+      if( !esAvancePapelEngrapadora ){
+        //Encender la banda
+        _accion->bandas(true);
+        
+        _accion->avancePapelEngrapadora(true);
+        esAvancePapelEngrapadora = true;
+      }
+      //Desactivar senal de avance papel
+      if( esAvancePapelEngrapadora && tiempoActual >= TIM_SIG_AVANCE_PAPEL_ENGRAPADORA ){
+        _accion->avancePapelEngrapadora(false);
+        
+        //terminar
+        //apagar la banda
+        _accion->bandas(false);
+        _terminado = true;
+      }
     break;
     
     case TEST_DOBLAR:
