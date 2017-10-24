@@ -32,7 +32,7 @@ private:
     unsigned long tiempoActual = 0UL;
 
 //    metodos
-    void entradaTopePapel();
+    void entradaTopePapelEngrapadora();
 
     void entradaAjusteHorizontalVertical();
 
@@ -44,6 +44,9 @@ private:
     void engrapar();
     void avancePapel();
     void bandasDobladora();
+
+    void entradaTopePapelDobladora();
+
     void doblar();
     void salidaCorrienteDobladora();
     void finalizar();

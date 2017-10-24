@@ -25,8 +25,7 @@ void Accion::ajustePapel(boolean estado) {
     if (_ajustePapel == estado) { return; }
     _ajustePapel = estado;
 
-    digitalWrite(PIN_AJUSTE_HORIZONTAL_ENGRAPADORA, estado);
-    digitalWrite(PIN_AJUSTE_VERTICAL_ENGRADORA, estado);
+    digitalWrite(PIN_AJUSTE_HORIZONTAL_VERTICAL_ENGRAPADORA, estado);
 }
 
 void Accion::engrapar(boolean estado) {
@@ -45,7 +44,13 @@ void Accion::avancePapelEngrapadora(boolean estado) {
     digitalWrite(PIN_AVANCE_PAPEL_ENGRAPDORA, estado);
 }
 
-//Dobladora
+void Accion::topeDobladora(boolean estado) {
+    if (_topeDobladora == estado) { return; }
+    _topeDobladora = estado;
+
+    digitalWrite(PIN_TOPE_DOBLAR, estado);
+}
+
 void Accion::bandaDobladora(boolean estado) {
     if (_bandaDobladora == estado) { return; }
     _bandaDobladora = estado;

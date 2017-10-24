@@ -23,7 +23,7 @@ boolean Proceso::esTerminado() {
     return _terminado;
 }
 
-void Proceso::entradaTopePapel() {
+void Proceso::entradaTopePapelEngrapadora() {
     if (tiempoActual >= TIM_ENTRADA_TOPE_ENGRAPAR) {
         _accion->topeGrapa(true);
 
@@ -118,6 +118,16 @@ void Proceso::bandasDobladora() {
     }
 }
 
+void Proceso::entradaTopePapelDobladora() {
+    if (tiempoActual >= TIM_ENTRADA_TOPE_DOBLADORA) {
+        _accion->topeDobladora(true);
+
+    } else if (tiempoActual >= (TIM_ENTRADA_TOPE_DOBLADORA + TIM_SIG_TOPE_DOBLADORA)) {
+        //Desactivar senal del tope de papel
+        _accion->topeDobladora(false);
+    }
+}
+
 void Proceso::doblar() {
     //activar la dobladora
     if (tiempoActual >= (TIM_ENTRADA_DOBLADORA)) {
@@ -156,7 +166,7 @@ void Proceso::calcular() {
     tiempoActual = millis() - _tiempoInicio;
 
     //Entrada del tope de papel
-    entradaTopePapel();
+    entradaTopePapelEngrapadora();
 
     //activar los ajuste de papel
     entradaAjusteHorizontalVertical();
@@ -169,6 +179,7 @@ void Proceso::calcular() {
 
     //Dobladora
     bandasDobladora();
+    entradaTopePapelDobladora();
 
     doblar();
 

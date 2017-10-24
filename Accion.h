@@ -12,14 +12,15 @@ class Accion{
     boolean entradaPapel();
 
     //Dobladora
-    void topeGrapa(boolean estado);
     void salidaCorrienteDobladora(boolean estado);
     void doblar(boolean estado);
     void bandaDobladora(boolean estado);
+    void topeDobladora(boolean estado);
     
     //Engrapadora
     void ajustePapel(boolean estado);
     void engrapar(boolean estado);
+    void topeGrapa(boolean estado);
 
 //    quizas no haga falta
     boolean mitadVueltasAjustePapel();
@@ -37,6 +38,7 @@ private:
     bool _bandaDobladora = false;
     bool  _doblar = false;
     bool _salidaCorrienteDobladora = false;
+    bool  _topeDobladora = false;
 };
 
 #endif
