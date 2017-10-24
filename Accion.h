@@ -7,15 +7,10 @@
 class Accion{
   public:
     Accion();
-    boolean menuAjusteEngrape();  
-    boolean menuEngrapar();
-    boolean menuAvanceDobladora();
-    boolean menuDoblar();
     
     //Acciones de la torre
     boolean entradaPapel();
-    boolean inicioTorre();
-    
+
     //Dobladora
     void topeGrapa(boolean estado);
     void salidaCorrienteDobladora(boolean estado);
@@ -25,13 +20,23 @@ class Accion{
     //Engrapadora
     void ajustePapel(boolean estado);
     void engrapar(boolean estado);
+
+//    quizas no haga falta
     boolean mitadVueltasAjustePapel();
+
     void avancePapelEngrapadora(boolean estado);
     void bandaEngrapadora(boolean estado);
     
     void bandas(boolean estado);
-    
-    
+
+private:
+    bool _topeGrapa = false;
+    bool _ajustePapel = false;
+    bool _engrapar = false;
+    bool  _avancePapelEngrapadora = false;
+    bool _bandaDobladora = false;
+    bool  _doblar = false;
+    bool _salidaCorrienteDobladora = false;
 };
 
 #endif

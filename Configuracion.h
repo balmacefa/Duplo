@@ -27,13 +27,10 @@
 #define TIM_ENTRADA_DOBLADORA -1//Tiempo donde se activa la dobladora
 #define TIM_SIG_DOBLADORA -1//Tiempo que permanece la segnal de la dobladora en el rele
 
+#define  TIM_ENTRADA_BANDAS_DOBLADORA -1 //Tiempo donde se activan las bandas de la dobladora
+
 #define TIM_ENTRADA_SALIDA_CORRIENTE_DOBLADORA -1//Tiempo donde se activa la salida de corriente para la salida del papel o la cortadora
 #define TIM_SIG_SALIDA_CORRIENTE_DOBLADORA  -1//Tiempo que permanece la segnal de la salida de corriente en el rele
 
-//Tiempo para los tests
-#define TIM_TEST_SIG_ENGRAPAR -1
-#define TIM_TEST_SIG_AVANCE_PAPEL_ENGRAPADORA -1
-#define TIM_TEST_ENTRADA_SALIDA_CORRIENTE_DOBLADORA -1
-#define TIM_TEST_SIG_DOBLADORA -1
 
 #endif

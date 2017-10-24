@@ -6,37 +6,47 @@
 #include "Arduino.h"
 
 
-class Proceso{
-  public:
-    Proceso(Accion* accion,unsigned long timeInit);
-    Proceso(Accion* accion);
-    
-    void hacerAjusteEngrape();
-    void hacerEngrapar();
-    void hacerAvanceDobladora();
-    void hacerDoblar();
+class Proceso {
+public:
+    Proceso(Accion *accion, unsigned long timeInit);
+
+    Proceso(Accion *accion);
+
     boolean esTerminado();
-    
-    void setTiempoInicial( unsigned long timeInit);
-    void calcularPrueba();    
+
     void calcular();
+
     void reiniciarVariables();
-    
-    private:
-      Accion* _accion;
-      int _test;
-      boolean _terminado;
-      unsigned long _tiempoInicio = 0UL;
-      
-      boolean esSalidaCorrienteDobladora = false;
-      boolean esTope = false;
-      boolean esAjustePapel = false;
-      boolean esAjustePapelAbrir = false;
-      boolean esEngrapar = false;
-      boolean esAvancePapelEngrapadora = false;
-      boolean esDoblar = false;
-      int cantidadMitadVuelta = 0;
-      unsigned long sigLecturaAjustePapel = 0UL;
+
+private:
+    Accion *_accion;
+    int _test;
+    boolean _terminado;
+    unsigned long _tiempoInicio = 0UL;
+
+    boolean esAjustePapel = false;
+    boolean esAjustePapelAbrir = false;
+    int cantidadMitadVuelta = 0;
+    unsigned long sigLecturaAjustePapel = 0UL;
+
+    unsigned long tiempoActual = 0UL;
+
+//    metodos
+    void entradaTopePapel();
+
+    void entradaAjusteHorizontalVertical();
+
+    void entradaAjusteHorizontalVertical_PrimerAjuste();
+    void entradaAjusteHorizontalVertical_SegundoAjusteRelajar();
+
+    void contarMitadDeVueltasAjustePapel();
+
+    void engrapar();
+    void avancePapel();
+    void bandasDobladora();
+    void doblar();
+    void salidaCorrienteDobladora();
+    void finalizar();
 };
 
 #endif
