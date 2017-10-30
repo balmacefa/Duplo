@@ -15,7 +15,6 @@ class Accion{
     void salidaCorrienteDobladora(boolean estado);
     void doblar(boolean estado);
     void bandaDobladora(boolean estado);
-    void topeDobladora(boolean estado);
     
     //Engrapadora
     void ajustePapel(boolean estado);
@@ -36,9 +35,9 @@ private:
     bool _engrapar = false;
     bool  _avancePapelEngrapadora = false;
     bool _bandaDobladora = false;
+    bool _bandaEngrapadora = false;
     bool  _doblar = false;
     bool _salidaCorrienteDobladora = false;
-    bool  _topeDobladora = false;
 };
 
 #endif

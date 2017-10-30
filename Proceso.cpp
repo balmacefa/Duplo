@@ -6,16 +6,10 @@ Proceso::Proceso(Accion *accion, unsigned long timeInit) {
     _terminado = false;
 }
 
-Proceso::Proceso(Accion *accion) {
-    _accion = accion;
-    _terminado = false;
-}
-
 void Proceso::reiniciarVariables() {
     esAjustePapel = false;
     esAjustePapelAbrir = false;
     cantidadMitadVuelta = 0;
-    sigLecturaAjustePapel = 0UL;
     tiempoActual = 0UL;
 }
 
@@ -23,12 +17,17 @@ boolean Proceso::esTerminado() {
     return _terminado;
 }
 
-void Proceso::entradaTopePapelEngrapadora() {
-    if (tiempoActual >= TIM_ENTRADA_TOPE_ENGRAPAR) {
-        _accion->topeGrapa(true);
+bool entrada_entradaTopePapelEngrapadora;
+bool salida_entradaTopePapelEngrapadora;
 
-    } else if (tiempoActual >= (TIM_ENTRADA_TOPE_ENGRAPAR + TIM_SIG_TOPE_ENGRAPAR)) {
+void Proceso::entradaTopePapelEngrapadora() {
+    if ( !entrada_entradaTopePapelEngrapadora && tiempoActual >= TIM_ENTRADA_TOPE_ENGRAPAR) {
+        entrada_entradaTopePapelEngrapadora = true;
+        _accion->topeGrapa(true);
+    }
+    if (!salida_entradaTopePapelEngrapadora && tiempoActual >= (TIM_ENTRADA_TOPE_ENGRAPAR + TIM_SIG_TOPE_ENGRAPAR)) {
         //Desactivar senal del tope de papel
+        salida_entradaTopePapelEngrapadora = true;
         _accion->topeGrapa(false);
     }
 }
@@ -41,11 +40,12 @@ void Proceso::entradaAjusteHorizontalVertical() {
 
 }
 
+bool estadoMitadDevuleta;
 void Proceso::entradaAjusteHorizontalVertical_PrimerAjuste(){
     if (!esAjustePapel && tiempoActual >= TIM_ENTRADA_AJUSTE_HORI_VERT_PAPEL) {
+        estadoMitadDevuleta = _accion->mitadVueltasAjustePapel();
         _accion->ajustePapel(true);
         esAjustePapel = true;
-        sigLecturaAjustePapel = tiempoActual;
     }
 
     //Contar cantidad de mitad de vueltas de los motores
@@ -63,9 +63,9 @@ void Proceso::entradaAjusteHorizontalVertical_PrimerAjuste(){
 void Proceso::entradaAjusteHorizontalVertical_SegundoAjusteRelajar(){
 
     if ((!esAjustePapelAbrir && tiempoActual >= (TIM_ENTRADA_AJUSTE_HORI_VERT_PAPEL_DEJAR_PASAR))) {
+        estadoMitadDevuleta = _accion->mitadVueltasAjustePapel();
         _accion->ajustePapel(true);
         esAjustePapelAbrir = true;
-        sigLecturaAjustePapel = tiempoActual;
     }
 
     //Contar cantidad de mitad de vueltas de los motores
@@ -82,73 +82,82 @@ void Proceso::entradaAjusteHorizontalVertical_SegundoAjusteRelajar(){
 
 void Proceso::contarMitadDeVueltasAjustePapel(){
     //frecuencia para preguntar
-    if (tiempoActual >= sigLecturaAjustePapel && _accion->mitadVueltasAjustePapel()) {
+    bool lectura = _accion->mitadVueltasAjustePapel();
+
+    if (lectura != estadoMitadDevuleta) {
+        estadoMitadDevuleta = lectura;
         //aumentar cantidad de vueltas
         cantidadMitadVuelta++;
-        //Ajustar el nuevo tiempo para preguntar
-        sigLecturaAjustePapel = tiempoActual + FRECUENCIA_LECTURA_AJUSTE_PAPEL;
     }
 }
 
+bool entrada_engrapar;
+bool salida_engrapar;
 void Proceso::engrapar(){
-    if (tiempoActual >= TIM_ENTRADA_ENGRAPAR) {
+    if (!entrada_engrapar && tiempoActual >= TIM_ENTRADA_ENGRAPAR) {
+        entrada_engrapar = true;
         _accion->engrapar(true);
     }
     //Desactivar senal de engrapadora
-    if (tiempoActual >= (TIM_ENTRADA_ENGRAPAR + TIM_SIG_ENGRAPAR)) {
+    if (!salida_engrapar && tiempoActual >= (TIM_ENTRADA_ENGRAPAR + TIM_SIG_ENGRAPAR)) {
+        salida_engrapar = true;
         _accion->engrapar(false);
     }
 }
 
+bool entrada_avancePapel;
+bool salida_avancePapel;
 void Proceso::avancePapel() {
     //avance del papel
-    if (tiempoActual >= TIM_ENTRADA_AVANCE_PAPEL_ENGRAPADORA) {
+    if (!entrada_avancePapel && tiempoActual >= TIM_ENTRADA_AVANCE_PAPEL_ENGRAPADORA) {
+        entrada_avancePapel = true;
         _accion->avancePapelEngrapadora(true);
     }
     //Desactivar senal de avance papel
-    if (tiempoActual >= (TIM_ENTRADA_AVANCE_PAPEL_ENGRAPADORA + TIM_SIG_AVANCE_PAPEL_ENGRAPADORA)) {
+    if (!salida_avancePapel && tiempoActual >= (TIM_ENTRADA_AVANCE_PAPEL_ENGRAPADORA + TIM_SIG_AVANCE_PAPEL_ENGRAPADORA)) {
+        salida_avancePapel = true;
         _accion->avancePapelEngrapadora(false);
     }
 }
 
+bool entrada_bandasDobladora;
 void Proceso::bandasDobladora() {
     //activar las bandas de la dobladora
-    if (tiempoActual >= (TIM_ENTRADA_BANDAS_DOBLADORA)) {
+    if (!entrada_bandasDobladora && tiempoActual >= (TIM_ENTRADA_BANDAS_DOBLADORA)) {
+        entrada_bandasDobladora = true;
         _accion->bandaDobladora(true);
     }
 }
 
-void Proceso::entradaTopePapelDobladora() {
-    if (tiempoActual >= TIM_ENTRADA_TOPE_DOBLADORA) {
-        _accion->topeDobladora(true);
-
-    } else if (tiempoActual >= (TIM_ENTRADA_TOPE_DOBLADORA + TIM_SIG_TOPE_DOBLADORA)) {
-        //Desactivar senal del tope de papel
-        _accion->topeDobladora(false);
-    }
-}
-
+bool entrada_doblar;
+bool salida_doblar;
 void Proceso::doblar() {
     //activar la dobladora
-    if (tiempoActual >= (TIM_ENTRADA_DOBLADORA)) {
+    if (!entrada_doblar && tiempoActual >= (TIM_ENTRADA_DOBLADORA)) {
+        entrada_doblar = true;
         _accion->doblar(true);
     }
 
     //desactivar dobladora
-    if (tiempoActual >= (TIM_ENTRADA_DOBLADORA + TIM_SIG_DOBLADORA)) {
+    if (!salida_doblar && tiempoActual >= (TIM_ENTRADA_DOBLADORA + TIM_SIG_DOBLADORA)) {
+        salida_doblar = true;
         _accion->doblar(false);
     }
 }
 
+bool entrada_salidaCorrienteDobladora;
+bool salida_salidaCorrienteDobladora;
 void Proceso::salidaCorrienteDobladora() {
     //activar salida final del papel
-    if (tiempoActual >= (TIM_ENTRADA_SALIDA_CORRIENTE_DOBLADORA)) {
+    if (!entrada_salidaCorrienteDobladora && tiempoActual >= (TIM_ENTRADA_SALIDA_CORRIENTE_DOBLADORA)) {
+        entrada_salidaCorrienteDobladora = true;
         _accion->salidaCorrienteDobladora(true);
     }
 
     //si ya se termino el proceso
-    if (tiempoActual >= (TIM_ENTRADA_SALIDA_CORRIENTE_DOBLADORA + TIM_SIG_SALIDA_CORRIENTE_DOBLADORA)) {
+    if (!salida_salidaCorrienteDobladora && tiempoActual >= (TIM_ENTRADA_SALIDA_CORRIENTE_DOBLADORA + TIM_SIG_SALIDA_CORRIENTE_DOBLADORA)) {
         //Ya hemos terminado
+        salida_salidaCorrienteDobladora = true;
         finalizar();
     }
 }
@@ -158,10 +167,12 @@ void Proceso::finalizar(){
     _accion->bandaDobladora(false);
     _accion->salidaCorrienteDobladora(false);
     _terminado = true;
+    Serial.println("Fin proceso");
 }
 
 void Proceso::calcular() {
-
+    if(_terminado){return;}
+    
     //Calcular el offset del tiempo
     tiempoActual = millis() - _tiempoInicio;
 
@@ -169,19 +180,18 @@ void Proceso::calcular() {
     entradaTopePapelEngrapadora();
 
     //activar los ajuste de papel
-    entradaAjusteHorizontalVertical();
+//    entradaAjusteHorizontalVertical();
 
     //Engrapar
     //Entrada de la engrapadora
-    engrapar();
+    //engrapar();
 
-    avancePapel();
+    //avancePapel();
 
     //Dobladora
-    bandasDobladora();
-    entradaTopePapelDobladora();
+    //bandasDobladora();
 
-    doblar();
+    //doblar();
 
-    salidaCorrienteDobladora();
+//    salidaCorrienteDobladora();
 }

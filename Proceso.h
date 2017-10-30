@@ -10,8 +10,6 @@ class Proceso {
 public:
     Proceso(Accion *accion, unsigned long timeInit);
 
-    Proceso(Accion *accion);
-
     boolean esTerminado();
 
     void calcular();
@@ -27,7 +25,6 @@ private:
     boolean esAjustePapel = false;
     boolean esAjustePapelAbrir = false;
     int cantidadMitadVuelta = 0;
-    unsigned long sigLecturaAjustePapel = 0UL;
 
     unsigned long tiempoActual = 0UL;
 
@@ -44,8 +41,6 @@ private:
     void engrapar();
     void avancePapel();
     void bandasDobladora();
-
-    void entradaTopePapelDobladora();
 
     void doblar();
     void salidaCorrienteDobladora();
