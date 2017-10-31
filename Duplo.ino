@@ -10,26 +10,23 @@
 //Indica si la maquina esta haciendo un proceso
 boolean enProceso = false;
 
-unsigned long siguienteVerificacionDeEntradaDePapel;
-
 //Almacena los procesos
 std::vector<Proceso *> procesos;
 
 //Realiza acciones, se utiliza para encender y apagar las bandas, y leer botones
 Accion *accion;
 
+//Indicar si la entrada de papel es la misma, para no enviar la se;al varias veces
+bool mismoPapel;
 
 void setup() {
     accion = new Accion();
 
-    siguienteVerificacionDeEntradaDePapel = 0UL;
-
-
     accion->bandas(true);
-    
+
     Serial.begin(9600);
     Serial.println("DUPLO");
-    
+
 }
 
 void loop() {
@@ -47,12 +44,15 @@ void doModoProcesoCompleto() {
     terminarProcesos();
 }
 
-void verificarEntradaPapel(){
-//  if ( accion->entradaPapel() == true ) {
-    if ( millis() >= siguienteVerificacionDeEntradaDePapel && accion->entradaPapel() == true ) {
-      siguienteVerificacionDeEntradaDePapel = millis() + TIM_FRECUENCIA_REVISAR_ENTRADA_PAPEL_TORRE;
-      
-      Serial.println("papel");
+bool entradaPapel() {
+    mismoPapel = (!mismoPapel && accion->entradaPapel());
+    return mismoPapel;
+}
+
+void verificarEntradaPapel() {
+    if (entradaPapel()) {
+
+        Serial.println("papel");
         //crear un nuevo proceso y agregar el tiempo en que ocurrio
         procesos.push_back(new Proceso(accion, millis()));
 
@@ -61,7 +61,7 @@ void verificarEntradaPapel(){
     }
 }
 
-void ejecutarProcesos(){
+void ejecutarProcesos() {
     //si la maquina esta trabajando
     if (enProceso == true) {
         //calcular los procesos
@@ -79,7 +79,7 @@ void ejecutarProcesos(){
     }
 }
 
-void terminarProcesos(){
+void terminarProcesos() {
     //si los elementos de la lista son 0 se termina el equipo
     if (procesos.size() == 0) {
         enProceso == false;

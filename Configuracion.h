@@ -31,9 +31,4 @@
 #define TIM_ENTRADA_SALIDA_CORRIENTE_DOBLADORA 2900//Tiempo donde se activa la salida de corriente para la salida del papel o la cortadora
 #define TIM_SIG_SALIDA_CORRIENTE_DOBLADORA  1000//Tiempo que permanece la segnal de la salida de corriente en el rele
 
-//TORRE
-
-#define TIM_FRECUENCIA_REVISAR_ENTRADA_PAPEL_TORRE 2000//Tiempo de la frecuencia para revisar la entrada de papel 400
-
-
 #endif
