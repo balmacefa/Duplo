@@ -7,9 +7,6 @@
 #include <vector>
 #include <iterator>
 
-//Indica si la maquina esta haciendo un proceso
-boolean enProceso = false;
-
 //Almacena los procesos
 std::vector<Proceso *> procesos;
 
@@ -26,7 +23,6 @@ void setup() {
 
     Serial.begin(9600);
     Serial.println("DUPLO");
-
 }
 
 void loop() {
@@ -51,37 +47,35 @@ bool entradaPapel() {
 
 void verificarEntradaPapel() {
     if (entradaPapel()) {
-
         Serial.println("papel");
-        //crear un nuevo proceso y agregar el tiempo en que ocurrio
-        procesos.push_back(new Proceso(accion, millis()));
-
-        //colocar la maquina como trabajando
-        enProceso = true;
+        nuevoProceso();
     }
+}
+
+void nuevoProceso() {
+    if (procesos.size() > 0) {
+        //buscar algun proceso terminado y reiniciar
+        for (int i = 0; i < procesos.size(); ++i) {
+            if (procesos[i]->esTerminado()) {
+                //reiniciar las variables y setear el tiempo
+                procesos[i]->reiniciar(millis());
+                return;
+            }
+        }
+    }
+    //Se necesitan mas procesos
+    //crear un nuevo proceso y agregar el tiempo en que ocurrio
+    procesos.push_back(new Proceso(accion, millis()));
 }
 
 void ejecutarProcesos() {
     //si la maquina esta trabajando
-    if (enProceso == true) {
+    if (procesos.size() > 0) {
         //calcular los procesos
-        //Del mas antiguo al reciente
-        for (int i = procesos.size() - 1; i >= 0; i--) {
-            Proceso *pActual = procesos.at(i);
-            pActual->calcular();
-            //buscar si un proceso fue terminado
-            if (pActual->esTerminado()) {
-                //eliminar de la lista
-                procesos.erase(procesos.begin() + i - 1);
-                delete pActual;
+        for (int i = 0; i < procesos.size(); ++i) {
+            if (!procesos[i]->esTerminado()) {
+                procesos[i]->calcular();
             }
         }
-    }
-}
-
-void terminarProcesos() {
-    //si los elementos de la lista son 0 se termina el equipo
-    if (procesos.size() == 0) {
-        enProceso == false;
     }
 }

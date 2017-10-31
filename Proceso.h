@@ -14,19 +14,42 @@ public:
 
     void calcular();
 
-    void reiniciarVariables();
+    void reiniciar(unsigned long nuevoTiempoInicio);
 
 private:
     Accion *_accion;
-    int _test;
+
     boolean _terminado;
     unsigned long _tiempoInicio = 0UL;
 
-    boolean esAjustePapel = false;
-    boolean esAjustePapelAbrir = false;
-    int cantidadMitadVuelta = 0;
+    boolean _esAjustePapel = false;
+    boolean _esAjustePapelAbrir = false;
+    int _cantidadMitadVuelta = 0;
 
-    unsigned long tiempoActual = 0UL;
+    unsigned long _tiempoActual = 0UL;
+
+
+    //utils
+    bool _entrada_entradaTopePapelEngrapadora = false;
+    bool _salida_entradaTopePapelEngrapadora = false;
+
+    bool _estadoMitadDevuleta = false;
+
+    bool _lectura = false;
+
+    bool _entrada_engrapar = false;
+    bool _salida_engrapar = false;
+
+    bool _entrada_avancePapel = false;
+    bool _salida_avancePapel = false;
+
+    bool _entrada_doblar = false;
+    bool _salida_doblar = false;
+
+    bool _entrada_salidaCorrienteDobladora = false;
+    bool _salida_salidaCorrienteDobladora = false;
+
+
 
 //    metodos
     void entradaTopePapelEngrapadora();
