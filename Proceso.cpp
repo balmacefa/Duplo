@@ -120,15 +120,6 @@ void Proceso::avancePapel() {
     }
 }
 
-bool entrada_bandasDobladora;
-void Proceso::bandasDobladora() {
-    //activar las bandas de la dobladora
-    if (!entrada_bandasDobladora && tiempoActual >= (TIM_ENTRADA_BANDAS_DOBLADORA)) {
-        entrada_bandasDobladora = true;
-        _accion->bandaDobladora(true);
-    }
-}
-
 bool entrada_doblar;
 bool salida_doblar;
 void Proceso::doblar() {
@@ -163,8 +154,8 @@ void Proceso::salidaCorrienteDobladora() {
 }
 
 void Proceso::finalizar(){
-    //Desactivar la salida de corriente
-    _accion->bandaDobladora(false);
+//    //Desactivar la salida de corriente
+//    _accion->bandaDobladora(false);
     _accion->salidaCorrienteDobladora(false);
     _terminado = true;
     Serial.println("Fin proceso");
@@ -180,18 +171,17 @@ void Proceso::calcular() {
     entradaTopePapelEngrapadora();
 
     //activar los ajuste de papel
-//    entradaAjusteHorizontalVertical();
+    entradaAjusteHorizontalVertical();
 
     //Engrapar
     //Entrada de la engrapadora
-    //engrapar();
+    engrapar();
 
-    //avancePapel();
+    avancePapel();
 
     //Dobladora
-    //bandasDobladora();
 
-    //doblar();
+    doblar();
 
-//    salidaCorrienteDobladora();
+    salidaCorrienteDobladora();
 }

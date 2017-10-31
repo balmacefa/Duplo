@@ -24,11 +24,9 @@ void setup() {
 
     siguienteVerificacionDeEntradaDePapel = 0UL;
 
-//    procesos.push_back(new Proceso(accion, millis()));
-//
-//        //colocar la maquina como trabajando
-//        enProceso = true;
+
     accion->bandas(true);
+    
     Serial.begin(9600);
     Serial.println("DUPLO");
     
@@ -49,17 +47,12 @@ void doModoProcesoCompleto() {
     terminarProcesos();
 }
 
-bool entradaPapel(){
-    return Serial.available() > 0;
-
-//    accion->entradaPapel()
-}
-
 void verificarEntradaPapel(){
-    if ( millis() >= siguienteVerificacionDeEntradaDePapel && entradaPapel() == true) {
+//  if ( accion->entradaPapel() == true ) {
+    if ( millis() >= siguienteVerificacionDeEntradaDePapel && accion->entradaPapel() == true ) {
       siguienteVerificacionDeEntradaDePapel = millis() + TIM_FRECUENCIA_REVISAR_ENTRADA_PAPEL_TORRE;
       
-      Serial.println("entrada de papel");
+      Serial.println("papel");
         //crear un nuevo proceso y agregar el tiempo en que ocurrio
         procesos.push_back(new Proceso(accion, millis()));
 
