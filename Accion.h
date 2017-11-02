@@ -17,27 +17,23 @@ class Accion{
     void bandaDobladora(boolean estado);
     
     //Engrapadora
-    void ajustePapel(boolean estado);
+    void ajustePapelHorizontal(boolean estado);
+    void ajustePapelVertical(boolean estado);
+
+    void liberarAjusteHorizontal();
+    void liberarAjusteVertical();
+
     void engrapar(boolean estado);
     void topeGrapa(boolean estado);
 
-//    quizas no haga falta
-    boolean mitadVueltasAjustePapel();
+    boolean mitadVueltasAjustePapelHorizontal();
+    boolean mitadVueltasAjustePapelVertical();
 
     void avancePapelEngrapadora(boolean estado);
     void bandaEngrapadora(boolean estado);
     
     void bandas(boolean estado);
 
-private:
-    bool _topeGrapa = false;
-    bool _ajustePapel = false;
-    bool _engrapar = false;
-    bool  _avancePapelEngrapadora = false;
-    bool _bandaDobladora = false;
-    bool _bandaEngrapadora = false;
-    bool  _doblar = false;
-    bool _salidaCorrienteDobladora = false;
 };
 
 #endif

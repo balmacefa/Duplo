@@ -19,6 +19,9 @@ bool mismoPapel;
 void setup() {
     accion = new Accion();
 
+    accion->liberarAjusteHorizontal();
+    accion->liberarAjusteVertical();
+
     accion->bandas(true);
 
     Serial.begin(9600);
@@ -35,9 +38,6 @@ void doModoProcesoCompleto() {
 
     //calcular todos los procesos
     ejecutarProcesos();
-
-    //verificar si ya no existen procesos
-    terminarProcesos();
 }
 
 bool entradaPapel() {

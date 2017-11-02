@@ -10,16 +10,21 @@ void Proceso::reiniciar(unsigned long nuevoTiempoInicio) {
     _tiempoInicio = nuevoTiempoInicio;
     _esAjustePapel = false;
     _esAjustePapelAbrir = false;
-    _cantidadMitadVuelta = 0;
+
+    _cantidadMitadVueltaHorizontal = 0;
+    _cantidadMitadVueltaVertical = 0;
+
     _terminado = false;
     _tiempoActual = 0UL;
 
     _entrada_entradaTopePapelEngrapadora = false;
     _salida_entradaTopePapelEngrapadora = false;
 
-    _estadoMitadDevuleta = false;
+    _estadoMitadDevuletaHorizontal = false;
+    _estadoMitadDevuletaVertical = false;
 
-    _lectura = false;
+    _lecturaHorizontal = false;
+    _lecturaVertical = false;
 
     _entrada_engrapar = false;
     _salida_engrapar = false;
@@ -62,8 +67,13 @@ void Proceso::entradaAjusteHorizontalVertical() {
 
 void Proceso::entradaAjusteHorizontalVertical_PrimerAjuste() {
     if (!_esAjustePapel && _tiempoActual >= TIM_ENTRADA_AJUSTE_HORI_VERT_PAPEL) {
-        _estadoMitadDevuleta = _accion->mitadVueltasAjustePapel();
-        _accion->ajustePapel(true);
+
+        _estadoMitadDevuletaHorizontal = _accion->mitadVueltasAjustePapelHorizontal();
+        _estadoMitadDevuletaVertical = _accion->mitadVueltasAjustePapelVertical();
+
+        _accion->ajustePapelHorizontal(true);
+        _accion->ajustePapelVertical(true);
+
         _esAjustePapel = true;
     }
 
@@ -73,17 +83,27 @@ void Proceso::entradaAjusteHorizontalVertical_PrimerAjuste() {
     }
 
     //desactivas los ajustes verticales despues de 4 mitad de vueltas
-    if ((_esAjustePapel && _cantidadMitadVuelta >= MITAD_VUELTAS_AJUSTE_HORI_VERT_PAPEL)) {
-        _accion->ajustePapel(false);
-        _cantidadMitadVuelta = 0;
+    if ((_esAjustePapel && _cantidadMitadVueltaHorizontal >= MITAD_VUELTAS_AJUSTE_HORI_VERT_PAPEL)) {
+        _accion->ajustePapelHorizontal(false);
+        _cantidadMitadVueltaHorizontal = 0;
+    }
+
+    if ((_esAjustePapel && _cantidadMitadVueltaVertical >= MITAD_VUELTAS_AJUSTE_HORI_VERT_PAPEL)) {
+        _accion->ajustePapelVertical(false);
+        _cantidadMitadVueltaVertical = 0;
     }
 }
 
 void Proceso::entradaAjusteHorizontalVertical_SegundoAjusteRelajar() {
 
     if ((!_esAjustePapelAbrir && _tiempoActual >= (TIM_ENTRADA_AJUSTE_HORI_VERT_PAPEL_DEJAR_PASAR))) {
-        _estadoMitadDevuleta = _accion->mitadVueltasAjustePapel();
-        _accion->ajustePapel(true);
+
+        _estadoMitadDevuletaHorizontal = _accion->mitadVueltasAjustePapelHorizontal();
+        _estadoMitadDevuletaVertical = _accion->mitadVueltasAjustePapelVertical();
+
+        _accion->ajustePapelHorizontal(true);
+        _accion->ajustePapelVertical(true);
+
         _esAjustePapelAbrir = true;
     }
 
@@ -93,20 +113,32 @@ void Proceso::entradaAjusteHorizontalVertical_SegundoAjusteRelajar() {
     }
 
     //desactivas los ajustes verticales despues de 4 mitad de vueltas
-    if ((_esAjustePapelAbrir && _cantidadMitadVuelta == MITAD_VUELTAS_AJUSTE_HORI_VERT_PAPEL_DEJAR_PASAR)) {
-        _accion->ajustePapel(false);
-        _cantidadMitadVuelta = 0;
+    if ((_esAjustePapelAbrir && _cantidadMitadVueltaHorizontal == MITAD_VUELTAS_AJUSTE_HORI_VERT_PAPEL_DEJAR_PASAR)) {
+        _accion->ajustePapelHorizontal(false);
+        _cantidadMitadVueltaHorizontal = 0;
+    }
+
+    if ((_esAjustePapelAbrir && _cantidadMitadVueltaVertical == MITAD_VUELTAS_AJUSTE_HORI_VERT_PAPEL_DEJAR_PASAR)) {
+        _accion->ajustePapelVertical(false);
+        _cantidadMitadVueltaVertical = 0;
     }
 }
 
 void Proceso::contarMitadDeVueltasAjustePapel() {
     //frecuencia para preguntar
-    _lectura = _accion->mitadVueltasAjustePapel();
+    _lecturaHorizontal = _accion->mitadVueltasAjustePapelHorizontal();
+    _lecturaVertical = _accion->mitadVueltasAjustePapelVertical();
 
-    if (_lectura != _estadoMitadDevuleta) {
-        _estadoMitadDevuleta = _lectura;
+    if (_lecturaHorizontal != _estadoMitadDevuletaHorizontal) {
+        _estadoMitadDevuletaHorizontal = _lecturaHorizontal;
         //aumentar cantidad de vueltas
-        _cantidadMitadVuelta++;
+        _cantidadMitadVueltaHorizontal++;
+    }
+
+    if (_lecturaVertical != _estadoMitadDevuletaVertical) {
+        _estadoMitadDevuletaVertical = _lecturaVertical;
+        //aumentar cantidad de vueltas
+        _cantidadMitadVueltaVertical++;
     }
 }
 

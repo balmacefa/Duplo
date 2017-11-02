@@ -24,7 +24,9 @@ private:
 
     boolean _esAjustePapel = false;
     boolean _esAjustePapelAbrir = false;
-    int _cantidadMitadVuelta = 0;
+
+    int _cantidadMitadVueltaHorizontal = 0;
+    int _cantidadMitadVueltaVertical = 0;
 
     unsigned long _tiempoActual = 0UL;
 
@@ -33,9 +35,11 @@ private:
     bool _entrada_entradaTopePapelEngrapadora = false;
     bool _salida_entradaTopePapelEngrapadora = false;
 
-    bool _estadoMitadDevuleta = false;
+    bool _estadoMitadDevuletaHorizontal = false;
+    bool _estadoMitadDevuletaVertical = false;
 
-    bool _lectura = false;
+    bool _lecturaHorizontal = false;
+    bool _lecturaVertical = false;
 
     bool _entrada_engrapar = false;
     bool _salida_engrapar = false;
