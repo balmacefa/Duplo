@@ -199,11 +199,8 @@ void Proceso::salidaCorrienteDobladora() {
 }
 
 void Proceso::finalizar() {
-//    //Desactivar la salida de corriente
-//    _accion->bandaDobladora(false);
     _accion->salidaCorrienteDobladora(false);
     _terminado = true;
-    Serial.println("Fin proceso");
 }
 
 void Proceso::calcular() {

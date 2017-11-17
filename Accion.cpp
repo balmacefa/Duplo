@@ -13,7 +13,11 @@ Accion::Accion() {
     pinMode(PIN_BANDA_DOBLADORA, OUTPUT);
     pinMode(PIN_DOBLADORA, OUTPUT);
     pinMode(PIN_SALIDA_CORRIENTE_DOBLADORA, OUTPUT);
-    pinMode(PIN_TORRE_ENVIO_PAPEL, INPUT_PULLUP);
+
+    //inputs
+    pinMode(PIN_TORRE_ENVIO_PAPEL, INPUT);
+    pinMode(PIN_LECTURA_AJUSTE_HORIZONTAL_ENGRAPADORA, INPUT);
+    pinMode(PIN_LECTURA_AJUSTE_VERTICAL_ENGRAPADORA, INPUT);
 
 }
 
@@ -33,7 +37,8 @@ boolean Accion::mitadVueltasAjustePapelHorizontal() {
 }
 
 boolean Accion::mitadVueltasAjustePapelVertical() {
-    return digitalRead(PIN_LECTURA_AJUSTE_VERTICAL_ENGRAPADORA);
+    //inverse logic
+    return !digitalRead(PIN_LECTURA_AJUSTE_VERTICAL_ENGRAPADORA);
 }
 
 void Accion::ajustePapelHorizontal(boolean estado) {
@@ -41,7 +46,8 @@ void Accion::ajustePapelHorizontal(boolean estado) {
 }
 
 void Accion::ajustePapelVertical(boolean estado) {
-    digitalWrite(PIN_AJUSTE_VERTICAL_ENGRAPADORA, estado);
+    //!estado por el rele
+    digitalWrite(PIN_AJUSTE_VERTICAL_ENGRAPADORA, !estado);
 }
 
 void Accion::liberarAjusteHorizontal() {

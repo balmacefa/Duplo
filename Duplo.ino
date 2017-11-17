@@ -23,9 +23,6 @@ void setup() {
     accion->liberarAjusteVertical();
 
     accion->bandas(true);
-
-    Serial.begin(9600);
-    Serial.println("DUPLO");
 }
 
 void loop() {
@@ -41,13 +38,19 @@ void doModoProcesoCompleto() {
 }
 
 bool entradaPapel() {
-    mismoPapel = (!mismoPapel && accion->entradaPapel());
-    return mismoPapel;
+    if(!accion->entradaPapel()){
+        mismoPapel = false;
+        return false;
+    }
+    if( !mismoPapel && accion->entradaPapel() ) {
+        mismoPapel = true;
+        return true;
+    }
+    return false;
 }
 
 void verificarEntradaPapel() {
     if (entradaPapel()) {
-        Serial.println("papel");
         nuevoProceso();
     }
 }
